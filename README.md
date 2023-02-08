@@ -14,6 +14,9 @@ Objective:
 [![ariac_2021_screenshot_1](/README/ariac_2021_screenshot_1.jpg)](#)
 
 
+<img src="/README/ariac_2021_gif_1.gif"  height="480">
+
+
 
 ### To run:
 1. Follow setup instructions provided in install_instructions.md
