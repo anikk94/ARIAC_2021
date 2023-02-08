@@ -1,4 +1,5 @@
-# setup ubuntu 18
+## setup ubuntu 18
+1. download and install image from ubuntu's website
 
 ## install ros-melodic
 1. `sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'`
