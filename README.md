@@ -11,7 +11,7 @@ Objective:
 
 **Design a control system that can perform kitting and assembly of a predesigned product using multiple robots while tackling agility challenges inspired by real world difficulties**
 
-<a href="#"><img src="/README/ariac_2021_gif_1.gif"  height="480"></a>
+<a href=""><img src="/README/ariac_2021_gif_1.gif"  height="480"></a>
 
 
 [![ariac_2021_screenshot_1](/README/ariac_2021_screenshot_1.jpg)](#)
