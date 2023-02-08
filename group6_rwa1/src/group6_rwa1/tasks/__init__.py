@@ -1,0 +1,3 @@
+from group6_rwa1.tasks.submit_kitting_shipment import SubmitKittingShipment
+from group6_rwa1.tasks.submit_assembly_shipment import SubmitAssemblyShipment
+from group6_rwa1.tasks.wait import WaitTask

@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+from time import sleep
+import rospy
+import moveit_commander
+import sys
+
+from nist_gear.msg import Order
+from group6_rwa4 import start_competition
+from group6_rwa4 import initialize
+from group6_rwa4 import const_initialize
+from group6_rwa4 import competition_state_cb
+from group6_rwa4 import get_brain
+from group6_rwa4 import order_cb
+from group6_rwa4 import sensor_lc_qcs1_cb
+from group6_rwa4 import sensor_lc_qcs2_cb
+from group6_rwa4 import sensor_lc_qcs3_cb
+from group6_rwa4 import sensor_lc_qcs4_cb
+from group6_rwa4 import sensor_lc_agv1_cb
+from group6_rwa4 import sensor_lc_agv2_cb
+from group6_rwa4 import sensor_lc_agv3_cb
+from group6_rwa4 import sensor_lc_agv4_cb
+from group6_rwa4 import sensor_lc_b0_cb
+from group6_rwa4 import sensor_lc_b1_cb
+from group6_rwa4 import sensor_lc_as11_cb
+from group6_rwa4 import sensor_lc_as12_cb
+from group6_rwa4 import sensor_lc_as21_cb
+from group6_rwa4 import sensor_lc_as22_cb
+from group6_rwa4 import sensor_lc_as31_cb
+from group6_rwa4 import sensor_lc_as32_cb
+from group6_rwa4 import sensor_lc_as41_cb
+from group6_rwa4 import sensor_lc_as42_cb
+from group6_rwa4 import sensor_lc_station1_cb
+from group6_rwa4 import sensor_lc_station2_cb
+from group6_rwa4 import sensor_lc_station3_cb
+from group6_rwa4 import sensor_lc_station4_cb
+from group6_rwa4 import sensor_lc_belt_cb
+from group6_rwa4 import agv1_station_cb
+from group6_rwa4 import agv2_station_cb
+from group6_rwa4 import agv3_station_cb
+from group6_rwa4 import agv4_station_cb
+from nist_gear.msg import Order
+from nist_gear.msg import LogicalCameraImage
+from std_msgs.msg import String
+
+
+def callback_counter(msg):
+    """Call back for counter
+    """
+    pass
+    # rospy.loginfo(msg.data)
+    # execute function to save data to file
+
+
+def listeners():
+    rospy.Subscriber('/ariac/competition_state',String, competition_state_cb)
+    rospy.Subscriber('/ariac/orders', Order, order_cb)
+    rospy.Subscriber('/ariac/logical_camera_bins0', LogicalCameraImage, sensor_lc_b0_cb)
+    rospy.Subscriber('/ariac/logical_camera_bins1', LogicalCameraImage, sensor_lc_b1_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_1', LogicalCameraImage, sensor_lc_qcs1_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_2', LogicalCameraImage, sensor_lc_qcs2_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_3', LogicalCameraImage, sensor_lc_qcs3_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_4', LogicalCameraImage, sensor_lc_qcs4_cb)
+    rospy.Subscriber('/ariac/logical_camera_agv1', LogicalCameraImage, sensor_lc_agv1_cb)
+    rospy.Subscriber('/ariac/logical_camera_agv2', LogicalCameraImage, sensor_lc_agv2_cb)
+    rospy.Subscriber('/ariac/logical_camera_agv3', LogicalCameraImage, sensor_lc_agv3_cb)
+    rospy.Subscriber('/ariac/logical_camera_agv4', LogicalCameraImage, sensor_lc_agv4_cb)
+    rospy.Subscriber('/ariac/logical_camera_as11', LogicalCameraImage, sensor_lc_as11_cb)
+    rospy.Subscriber('/ariac/logical_camera_as12', LogicalCameraImage, sensor_lc_as12_cb)
+    rospy.Subscriber('/ariac/logical_camera_as21', LogicalCameraImage, sensor_lc_as21_cb)
+    rospy.Subscriber('/ariac/logical_camera_as22', LogicalCameraImage, sensor_lc_as22_cb)
+    rospy.Subscriber('/ariac/logical_camera_as31', LogicalCameraImage, sensor_lc_as31_cb)
+    rospy.Subscriber('/ariac/logical_camera_as32', LogicalCameraImage, sensor_lc_as32_cb)
+    rospy.Subscriber('/ariac/logical_camera_as41', LogicalCameraImage, sensor_lc_as41_cb)
+    rospy.Subscriber('/ariac/logical_camera_as42', LogicalCameraImage, sensor_lc_as42_cb)
+    rospy.Subscriber('/ariac/logical_camera_station1', LogicalCameraImage, sensor_lc_station1_cb)
+    rospy.Subscriber('/ariac/logical_camera_station2', LogicalCameraImage, sensor_lc_station2_cb)
+    rospy.Subscriber('/ariac/logical_camera_station3', LogicalCameraImage, sensor_lc_station3_cb)
+    rospy.Subscriber('/ariac/logical_camera_station4', LogicalCameraImage, sensor_lc_station4_cb)
+    rospy.Subscriber('/ariac/logical_camera_conveyor', LogicalCameraImage, sensor_lc_belt_cb)
+    rospy.Subscriber('/ariac/agv1/station', String, agv1_station_cb)
+    rospy.Subscriber('/ariac/agv2/station', String, agv2_station_cb)
+    rospy.Subscriber('/ariac/agv3/station', String, agv3_station_cb)
+    rospy.Subscriber('/ariac/agv4/station', String, agv4_station_cb)
+
+if __name__ == '__main__':
+
+    ROS_RATE = 5
+    comp=0
+    rospy.init_node("main_node_event_loop")
+    const_initialize()
+    listeners()
+    moveit_commander.roscpp_initialize(sys.argv)
+
+    rate = rospy.Rate(ROS_RATE)  # ROS Rate at 5Hz
+    rospy.loginfo("Starting Event Loop at " + str(ROS_RATE) + "Hz")
+
+    rospy.loginfo("Wait for gazebo to fire up...")
+    rospy.sleep(5) # slee for gazebo environment to start up
+
+    # blocking call to wait for start competition
+    # service and then start the competition
+    start_competition()
+    initialize()
+
+    while not rospy.is_shutdown():
+        get_brain().poll_plans()
+        rate.sleep()
+
+        if get_brain().obj_world_model.get_competition_state() == "done":
+            rospy.signal_shutdown("Competition Ended")

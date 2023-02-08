@@ -1,0 +1,28 @@
+[1mdiff --git a/src/group6_rwa1/package.xml b/src/group6_rwa1/package.xml[m
+[1mindex 814aa85..7bca0d6 100644[m
+[1m--- a/src/group6_rwa1/package.xml[m
+[1m+++ b/src/group6_rwa1/package.xml[m
+[36m@@ -7,7 +7,7 @@[m
+   <!-- One maintainer tag required, multiple allowed, one person per tag -->[m
+   <!-- Example:  -->[m
+   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->[m
+[31m-  <maintainer email="jayesh@todo.todo">jayesh</maintainer>[m
+[32m+[m[32m  <maintainer email="jayesh@umd.edu">jayesh</maintainer>[m
+   <maintainer email="anikk@umd.edu">Anirudh</maintainer>[m
+   <maintainer email="jayesh@todo.todo">jayesh</maintainer>[m
+   <maintainer email="jayesh@todo.todo">jayesh</maintainer>[m
+[1mdiff --git a/src/group6_rwa1/src/group6_rwa1/main_func.py b/src/group6_rwa1/src/group6_rwa1/main_func.py[m
+[1mindex 29d8756..54b92ea 100644[m
+[1m--- a/src/group6_rwa1/src/group6_rwa1/main_func.py[m
+[1m+++ b/src/group6_rwa1/src/group6_rwa1/main_func.py[m
+[36m@@ -8,10 +8,6 @@[m [mfrom group6_rwa1.tasks.wait import WaitTask[m
+ from rospy import loginfo[m
+ import rospy[m
+ [m
+[31m-<<<<<<< HEAD[m
+[31m-=======[m
+[31m-[m
+[31m->>>>>>> bca6b7943ef7682e1944f8a07eee661cf0a45bbb[m
+ def initialize():[m
+     rospy.loginfo("In Initialize")[m
+     StaticBrain.instance()[m

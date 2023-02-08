@@ -1,0 +1,20 @@
+Instructions to run GROUP 6 code:
+----------------------------------
+1. clone the ariac 2021/2022 packages into a new ros workspace in your home folder -> https://github.com/usnistgov/ARIAC.git
+2. extract the group6 package into the workspace
+3. replace the files that define competition conditions in ARIAC > nist_gear > config
+4. run the following commands in a single terminal
+5. run $ catkin build
+6. run $ source <workspace>/devel/setup.bash (for bash users)
+7. run $ roslaunch group6_rwa4 ariac.launch.
+
+Alternatively:
+---------------
+1 + 2.  clone the following repository in a new ros workspace -> https://github.com/silentkarmi/ariac_ws.git
+
+
+Notes:
+------
+1. Even though both assembly shipments in as1 and as3 are completed successfuly as per rwa4.yaml, the score is given only for one.
+2. There is a wait time of 20 seconds in the beginning. This is to give time to let gazebo simulator load. Because we have observed de-sync issue and move it library 
+failing if gazebo is not started first.

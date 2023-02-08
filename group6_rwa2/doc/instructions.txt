@@ -1,0 +1,30 @@
+Instructions to run GROUP 6 code:
+----------------------------------
+1. clone the ariac 2021/2022 packages into a new ros workspace in your home folder -> https://github.com/usnistgov/ARIAC.git
+2. extract the group6 package into the workspace
+3. replace the files that define competition conditions in ARIAC > nist_gear > config
+4. run the following commands in a single terminal
+5. run $ catkin build
+6. run $ source <workspace>/devel/setup.bash (for bash users)
+7. run $ roslaunch group6_rwa2 ariac.launch. The parts to be spawned in part_spawner.sh is now done through the launch file. 
+8. Please wait for atleast 5 minutes before terminating Gazebo for all the print statements to be displayed.
+
+Alternatively:
+---------------
+1 + 2.  clone the following repository in a new ros workspace -> https://github.com/silentkarmi/ariac_ws.git
+
+
+The links to view the revised sequence and assembly diagram are:
+Kitting: https://lucid.app/lucidchart/2097347f-cffc-4370-844a-61c992f530c7/edit?invitationId=inv_4fa2c9bd-18eb-423a-b54b-b3c59290d095  
+Assembly: https://lucid.app/lucidchart/1c27e32e-5056-4c21-aa60-9d3fcecd2e55/edit?invitationId=inv_a7003c02-6aac-4fa0-8513-7c972c00eaae 
+
+The link to view the class diagram:
+https://lucid.app/lucidchart/ee19b70f-f9b8-46a6-a6b7-31fac3888e51/edit?invitationId=inv_95dece8d-cd5a-4372-9aa7-f6ad4ed28688
+
+
+The PDF of the report has been attached with the name group6_rwa2_report.pdf  
+The PDFs of the revised and kitting and assembly sequence diagram has been attached.
+The PDF of the class diagram has been attached.
+
+Note:
+We have made the part_spawner.sh triggering the various agility challenges as a part of ariac.launch file only.

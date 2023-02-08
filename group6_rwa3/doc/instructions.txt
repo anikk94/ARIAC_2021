@@ -1,0 +1,19 @@
+Instructions to run GROUP 6 code:
+----------------------------------
+1. clone the ariac 2021/2022 packages into a new ros workspace in your home folder -> https://github.com/usnistgov/ARIAC.git
+2. extract the group6 package into the workspace
+3. replace the files that define competition conditions in ARIAC > nist_gear > config
+4. run the following commands in a single terminal
+5. run $ catkin build
+6. run $ source <workspace>/devel/setup.bash (for bash users)
+7. run $ roslaunch group6_rwa3 ariac.launch.
+
+Alternatively:
+---------------
+1 + 2.  clone the following repository in a new ros workspace -> https://github.com/silentkarmi/ariac_ws.git
+
+
+Notes:
+------
+1. We are currently getting an error after the competition ends and the final agility score is displayed. The error is "terminate called after throwing an instance of 'boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<boost::lock_error> >". Due to our code running multiple threads ROS is not cleaning up these threads thus resulting in the error. We will be handling this issue in RWA_4.
+2. Another error which is persistent is associated with tf2_ros. A service exception occurs "ServiceException: service [/main_node/tf2_frames] already registered". This error is associated with the get_target_world_pose() in moveit_runner.py from the RWA3_ENPM809E package uploaded by Dr. Kootbally. The same error is generated when we use the function in our RWA3 package.

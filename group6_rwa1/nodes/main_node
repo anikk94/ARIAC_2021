@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+
+import rospy
+from group6_rwa1 import Const
+from group6_rwa1 import initialize
+from group6_rwa1 import StaticBrain
+from nist_gear.msg import Order
+from group6_rwa1 import order_cb
+from group6_rwa1 import start_competition
+from group6_rwa1 import end_competition
+from group6_rwa1 import poll_plans
+from group6_rwa1 import sensor_lc_qcs1_cb
+from group6_rwa1 import sensor_lc_qcs2_cb
+from group6_rwa1 import sensor_lc_qcs3_cb
+from group6_rwa1 import sensor_lc_qcs4_cb
+from group6_rwa1 import sensor_lc_b0_cb
+from group6_rwa1 import sensor_lc_s2_cb
+from group6_rwa1 import sensor_dc_b1_cb
+from group6_rwa1 import sensor_lp0_cb
+from group6_rwa1 import sensor_ps0_cb
+from group6_rwa1 import sensor_bb0_cb
+from group6_rwa1 import competition_state_cb
+from group6_rwa1 import agv1_state_cb
+from group6_rwa1 import agv2_state_cb
+from group6_rwa1 import agv3_state_cb
+from group6_rwa1 import agv4_state_cb
+from group6_rwa1 import agv1_station_cb
+from group6_rwa1 import agv2_station_cb
+from group6_rwa1 import agv3_station_cb
+from group6_rwa1 import agv4_station_cb
+from nist_gear.msg import Order
+from nist_gear.msg import LogicalCameraImage
+from nist_gear.msg import Proximity
+from sensor_msgs.msg import PointCloud
+from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import Range
+from std_msgs.msg import String
+
+
+if __name__ == '__main__':
+
+    rospy.init_node("main_node_event_loop")
+    rate = rospy.Rate(Const.ROS_RATE)  # ROS Rate at 5Hz
+
+    rospy.loginfo("Starting Event Loop at " + str(Const.ROS_RATE) + "Hz")
+
+    # List all the subscribers here
+    # Testing Due
+    rospy.Subscriber('/ariac/deapth_camera_bins1', PointCloud, sensor_dc_b1_cb)
+    rospy.Subscriber('/ariac/competition_state', String, competition_state_cb)
+    rospy.Subscriber('/ariac/agv1/state', String, agv1_state_cb)
+    rospy.Subscriber('/ariac/agv2/state', String, agv2_state_cb)
+    rospy.Subscriber('/ariac/agv3/state', String, agv3_state_cb)
+    rospy.Subscriber('/ariac/agv4/state', String, agv4_state_cb)
+    rospy.Subscriber('/ariac/agv1/station', String, agv1_station_cb)
+    rospy.Subscriber('/ariac/agv2/station', String, agv2_station_cb)
+    rospy.Subscriber('/ariac/agv3/station', String, agv3_station_cb)
+    rospy.Subscriber('/ariac/agv4/station', String, agv4_station_cb)
+    
+    # Not working
+    rospy.Subscriber('/ariac/laser_profiler_0', LaserScan, sensor_lp0_cb)
+    # Working
+    rospy.Subscriber('/ariac/orders', Order, order_cb)
+    rospy.Subscriber('/ariac/competition_state', String, competition_state_cb)
+    rospy.Subscriber('/ariac/breakbeam_0', Proximity, sensor_bb0_cb)
+    rospy.Subscriber('/ariac/proximity_sensor_0', Range, sensor_ps0_cb)
+    rospy.Subscriber('/ariac/logical_camera_station2', LogicalCameraImage, sensor_lc_s2_cb)
+    rospy.Subscriber('/ariac/logical_camera_bins0', LogicalCameraImage, sensor_lc_b0_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_1', LogicalCameraImage, sensor_lc_qcs1_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_2', LogicalCameraImage, sensor_lc_qcs2_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_3', LogicalCameraImage, sensor_lc_qcs3_cb)
+    rospy.Subscriber('/ariac/quality_control_sensor_4', LogicalCameraImage, sensor_lc_qcs4_cb)
+
+    initialize()
+    
+    # blocking call to wait for start competition service and then start the competition
+    start_competition()
+
+    while StaticBrain.instance().obj_world_model.competition_state != String("done"):
+        poll_plans()
+        rate.sleep()
+    
+    end_competition()
+
+    if StaticBrain.instance().obj_world_model.competition_state == String("done"):
+        rospy.sleep(5)
+        rospy.signal_shutdown("GG RWA1")

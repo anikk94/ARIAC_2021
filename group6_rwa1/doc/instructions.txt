@@ -1,0 +1,13 @@
+Instructions to run GROUP 6 code:
+----------------------------------
+1. clone the ariac 2021/2022 packages into a new ros workspace in your home folder -> https://github.com/usnistgov/ARIAC.git
+2. extract the group6 package into the workspace
+3. replace the files that define competition conditions in ARIAC > nist_gear > config
+4. run the following commands in a single terminal
+5. run $ catkin build
+6. run $ source <workspace>/devel/setup.bash (for bash users)
+7. run $ roslaunch group6_rwa1 group6_rwa.launch
+
+Alternatively:
+---------------
+1 + 2.  clone the following repository in a new ros workspace -> https://github.com/silentkarmi/ariac_ws.git
